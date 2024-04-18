@@ -1,29 +1,29 @@
 <template>
   <div class="page">
     <HeaderPageElement
-      class="page-header"
-      @open-sidebar="toggleSideBar"
+        class="page-header"
+        @open-sidebar="toggleSideBar"
     />
     <div class="page-body">
       <SideBar
-        class="page-body-sidebar"
-        :is-expanded="isExpanded"
+          class="page-body-sidebar"
+          :is-expanded="isExpanded"
       />
       <div
-        class="page-body-content"
-        :class="{'expanded-body': isExpanded}"
+          class="page-body-content"
+          :class="{'expanded-body': isExpanded}"
       >
         <div class="page-body-content-title">
           <span class="page-body-content-title-span">
-            Список направлений
+            Города
           </span>
         </div>
         <div class="page-body-data">
           <div class="page-body-data-search">
-            <SearchRoutesComponent :inputs-array="searchInputsArray" />
+            <SearchCitiesComponent :inputs-array="searchInputsArray" />
           </div>
           <div class="page-body-data-table">
-            <TableRoutes @open-popup-card="togglePopupCard" />
+            <TableCities @open-popup-card="togglePopupCard" />
           </div>
         </div>
       </div>
@@ -32,16 +32,16 @@
   <PopupCard
       v-if="isPopupCardOpen"
       :form-columns="popupColumns"
-      :popup-name="'Карта маршрута'"
+      :popup-name="'Карта города'"
       @close-popup-card="togglePopupCard"
   />
 </template>
-  
+
 <script setup>
 import HeaderPageElement from "@/components/UIComponents/Header/HeaderPageElement.vue";
 import SideBar from "@/components/UIComponents/SideBar/SideBar.vue";
-import SearchRoutesComponent from "@/components/UIComponents/Search/SearchRoutesComponent.vue";
-import TableRoutes from "@/components/UIComponents/Tables/TableRoutes.vue";
+import SearchCitiesComponent from "@/components/UIComponents/Search/SearchCitiesComponent.vue";
+import TableCities from "@/components/UIComponents/Tables/TableCities.vue";
 import PopupCard from "@/components/UIComponents/Popups/PopupCard.vue";
 import { ref } from "vue";
 
@@ -50,13 +50,19 @@ const isPopupCardOpen = ref(false)
 
 const searchInputsArray = [
   { placeholder: "Поиск по наименованию", type: "text" },
-  { placeholder: "Поиск по сокращению", type: "text" }
+  { placeholder: "Поиск по сокращению", type: "text" },
+  { placeholder: "Поиск по ОКАТО", type: "text" },
+  { placeholder: "Поиск по ОКТМО", type: "text" },
 ]
 
 const popupColumns = [
-  { key: "name", label: "Название:" },
   { key: "shortName", label: "Сокращение:" },
-  { key: "active", label: "Доступность:" },
+  { key: "name", label: "Название:" },
+  { key: "officialName", label: "Оффициальное название:" },
+  { key: "okato", label: "ОКАТО" },
+  { key: "oktmo", label: "ОКТМО:" },
+  { key: "longtitude", label: "Долгота:" },
+  { key: "latitude", label: "Широта:" }
 ]
 
 const toggleSideBar = () => {
@@ -67,7 +73,7 @@ const togglePopupCard = () => {
   isPopupCardOpen.value = !isPopupCardOpen.value
 }
 </script>
-  
+
 <style lang="scss">
 .page {
   display: flex;
@@ -89,11 +95,11 @@ const togglePopupCard = () => {
     &-sidebar {
       height: 100%;
     }
-  
+
     &-content
     {
       background-color: #ddf0f7;
-      height: 100%;
+      height: 135vh;
       width: 100%;
       transition: 0.4s ease-out;
       margin-left: 0;

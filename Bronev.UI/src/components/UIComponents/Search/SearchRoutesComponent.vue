@@ -24,6 +24,7 @@
         :type="input.type"
         :placeholder="input.placeholder"
         class="search-body-input"
+        @input-text-change="getInputText"
       />
     </div>
     <div class="search-footer">
@@ -48,6 +49,8 @@ import InputBaseComponent from '@/components/ BaseComponents/Input/InputBaseComp
 import ButtonBaseComponent from '@/components/ BaseComponents/Button/ButtonBaseComponent.vue';
 
 import PlusIcon from "@/assets/SvgImages/plus.svg"
+import { ref } from "vue";
+import { useStore } from "@/stores/store.js";
 
 const props = defineProps({
   inputsArray: {
@@ -56,12 +59,40 @@ const props = defineProps({
   }
 })
 
+const store = useStore()
+
+const fullName = ref("")
+const shortName = ref("")
+
+const searchParam = {
+    paramFullName: "name",
+    paramShortName: "shortName",
+
+}
+
+const getInputText = (value) => {
+  fullName.value = value
+  shortName.value = value
+}
+
 const startSearch = () => {
-  console.log("Start")
+  if (fullName.value.length > 0) {
+    store.searchTableRoutes(searchParam.paramFullName, fullName.value)
+  }
+  else if (shortName.value.length > 0) {
+    store.searchTableRoutes(searchParam.paramShortName, shortName.value)
+  }
+  else if (fullName.value.length > 0 && shortName.value.length > 0) {
+    console.log("оба инпута введены")
+  }
+  else {
+    console.log("пустые инпуты")
+  }
 }
 
 const denySearch = () => {
-  console.log("Deny")
+  fullName.value = ""
+  store.getTableRoutes()
 }
 
 const buttonFooterArray = [

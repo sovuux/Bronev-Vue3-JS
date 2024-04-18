@@ -15,33 +15,57 @@
       <span class="login-text-content">
         Для продолжения работы неоходимо пройти авторизацию
       </span>
-      <router-link to="/home">
-        <ButtonBaseComponent
-          :button-name="'Войти'"
-          class="login-text-button"
-          @click-action="tryLogin"
-        >
-          <template #buttonContent />
-        </ButtonBaseComponent>
-      </router-link>
+      <ButtonBaseComponent
+        :button-name="'Войти'"
+        class="login-text-button"
+        @click-action="tryLogin"
+      >
+        <template #buttonContent />
+      </ButtonBaseComponent>
     </div>
   </div>
 </template>
 
 <script setup>
 import ButtonBaseComponent from "@/components/ BaseComponents/Button/ButtonBaseComponent.vue";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
-const emit = defineEmits(["tryLogin"])
+const router = useRouter()
+
+const loginPage = ref()
+
+const openHomePage = () => {
+  router.push("/home")
+}
 
 const tryLogin = () => {
   const loginUrl = 'https://core.dev.bronew.ru/auth/sso'
-  const loginPage = window.open(loginUrl, '_blank', 'left=800,top=100,width=500,height=500')
-  loginPage.addEventListener('load', () => {
-    const pageUrl = loginPage.location.href
-    console.log(pageUrl)
-  })
-  emit("tryLogin")
+  loginPage.value = window.open(loginUrl, '_blank', 'left=800,top=100,width=500,height=500')
+  const checkTokenInterval = setInterval(() => {
+    if (loginPage.value.closed || loginPage.value.location.pathname.startsWith("/login")) {
+      const token = loginPage.value.location.href.split(/[=?/&]/).splice(5,6).join('');
+      clearInterval(checkTokenInterval)
+      localStorage.setItem("token", token)
+      loginPage.value.close()
+      console.clear()
+    }
+  }, 1000)
+  openHomePage()
+ // loginPage.value.onload = getTokenWindowHandler
 }
+
+// function getTokenWindowHandler() {
+//   const UrlSearchParams = new URLSearchParams(loginPage.value.location.search)
+//   const tokenUrl = UrlSearchParams.get("token")
+//   localStorage.setItem("token", tokenUrl)
+//   openHomePage()
+//   loginPage.value.close()
+// }
+//
+// watch(() => loginPage.value, () => {
+//   loginPage.value.addEventListener("focus", getTokenWindowHandler, { once: true })
+// })
 </script>
 
 <style scoped lang="scss">

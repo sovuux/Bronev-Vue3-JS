@@ -77,6 +77,8 @@ import TextFileIcon from "@/assets/SvgImages/file-text-fill.svg"
 import QuestionIcon from "@/assets/SvgImages/question-circle-fill.svg"
 import CarIcon from "@/assets/SvgImages/car.svg"
 import SignPostIcon from "@/assets/SvgImages/signpost.svg"
+import CityIcon from "@/assets/SvgImages/city.svg"
+import PeopleIcon from "@/assets/SvgImages/people.svg"
 import { ref } from "vue";
 
 const props = defineProps({
@@ -102,11 +104,15 @@ const buttonsArray = [
 
 const dropDownArrayExpanded = ref([
   { content: "Водители", icon: CarIcon, path: "/drivers"  },
-  { content: "Направления", icon: SignPostIcon, path: "/routes" }
+  { content: "Направления", icon: SignPostIcon, path: "/routes" },
+  { content: "Пассажиры", icon: PeopleIcon, path: "/people" },
+  { content: "Города", icon: CityIcon, path: "/cities" },
 ])
 const dropDownArrayShort = ref([
   { icon: CarIcon, path: "/drivers" },
-  { icon: SignPostIcon, path: "/routes" }
+  { icon: SignPostIcon, path: "/routes" },
+  { icon: PeopleIcon, path: "/people" },
+  { icon: CityIcon, path: "/cities" },
 ])
 </script>
 

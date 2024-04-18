@@ -1,0 +1,38 @@
+.p {
+  &-paginator {
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    &-icon {
+      width: 2rem;
+      height: 2rem;
+    }
+    &-page {
+      padding: 0.41rem 1rem;
+    }
+    &-element {
+      text-align: center;
+      cursor: pointer;
+      border: rgb(96, 153, 9) solid 1px;
+      background: none;
+      color: rgb(96, 153, 9);
+      font-size: 1.4rem;
+      &:hover {
+        background-color: rgb(96, 153, 9);
+        color: white;
+      }
+      &:focus {
+        background-color: rgb(96, 153, 9);
+        color: white;
+      }
+    }
+    &-first {
+      display: none;
+    }
+    &-last {
+      display: none;
+    }
+  }
+}
