@@ -1,138 +1,64 @@
 import axios from "axios";
 
-const API_URl = "https://core.dev.bronew.ru/api/";
-const API_URL_CITIES = "https://svida.routeam.ru/api/cities"
+const API_URl = import.meta.env.VITE_API_URL;
+const API_URL_CITIES = import.meta.env.VITE_API_URL_CITIES;
 
 const token = localStorage.getItem("token");
 
-const ApiQueries = {
-    async getRoutes() {
-        try {
-            const response = await axios.get(API_URl+ "dictionary/directions", {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/ld+json',
-                    'Content-Type': 'application/json; charset=UTF-8'
-                }
-            })
-
+function createAxios(url) {
+        return axios.get(API_URl + url, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/ld+json',
+            'Content-Type': 'application/json; charset=UTF-8'
+        }
+        }).then(response => {
             const data = response.data['hydra:member'];
             const totalItems = response.data['hydra:totalItems'];
-            return { data, totalItems }
-        }
-        catch(error) {
-            console.error(error.message);
-            throw new Error(error.message);
-        }
+            return { data, totalItems };
+        }).catch(error => {
+            console.error('Ошибка при выполнении запроса:', error);
+            throw new error;
+        });
+}
+
+async function getResponseData(url) {
+    try {
+        return await createAxios(url)
+    } catch (error) {
+        console.error('Ошибка при получении данных:', error);
+    }
+}
+
+const ApiQueries = {
+    async getRoutes() {
+        return await getResponseData("dictionary/directions")
     },
 
     async searchRoutes(parameter,searchParams) {
-        try {
-            const response = await axios.get(API_URl+ `dictionary/directions?${parameter}=${searchParams}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/ld+json',
-                    'Content-Type': 'application/json; charset=UTF-8'
-                }
-            })
-
-            const data = response.data['hydra:member'];
-            const totalItems = response.data['hydra:totalItems'];
-            return { data, totalItems }
-        }
-        catch (error) {
-            console.error(error.message);
-            throw new Error(error.message);
-        }
+        return await getResponseData(`dictionary/directions?${parameter}=${searchParams}`)
     },
 
     async getDrivers() {
-        try {
-            const response = await axios.get(API_URl+ "dictionary/drivers", {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/ld+json',
-                    'Content-Type': 'application/json; charset=UTF-8'
-                }
-            })
-
-            const data = response.data['hydra:member'];
-            const totalItems = response.data['hydra:totalItems'];
-            return { data, totalItems }
-        }
-        catch(error) {
-            console.error(error.message);
-            throw new Error(error.message);
-        }
+        return await getResponseData("dictionary/drivers")
     },
 
     async searchDrivers(parameter, searchParams) {
-        try {
-            const response = await axios.get(API_URl+ `dictionary/drivers?${parameter}=${searchParams}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/ld+json',
-                    'Content-Type': 'application/json; charset=UTF-8'
-                }
-            })
-
-            const data = response.data['hydra:member'];
-            const totalItems = response.data['hydra:totalItems'];
-            console.log(parameter, searchParams)
-            return { data, totalItems }
-        }
-        catch (error) {
-            console.error(error.message);
-            throw new Error(error.message);
-        }
+        return await getResponseData(`dictionary/drivers?${parameter}=${searchParams}`)
     },
 
     async getPeople() {
-        try {
-            const response = await axios.get(API_URl+ "people/people", {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/ld+json',
-                    'Content-Type': 'application/json; charset=UTF-8'
-                }
-            })
-
-            const data = response.data['hydra:member'];
-            const totalItems = response.data['hydra:totalItems'];
-            return { data, totalItems }
-        }
-        catch (error) {
-            console.error(error.message);
-            throw new Error(error.message);
-        }
+        return await getResponseData("people/people")
     },
 
     async searchPeople(parameter, searchParams) {
-        try {
-            const response = await axios.get(API_URl+ `people/people?${parameter}=${searchParams}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/ld+json',
-                    'Content-Type': 'application/json; charset=UTF-8'
-                }
-            })
-
-            const data = response.data['hydra:member'];
-            const totalItems = response.data['hydra:totalItems'];
-            console.log(parameter, searchParams)
-            return { data, totalItems }
-        }
-        catch (error) {
-            console.error(error.message);
-            throw new Error(error.message);
-        }
+        return await getResponseData(`people/people?${parameter}=${searchParams}`)
     },
 
     async getCities() {
         try {
             const response = await axios.get(API_URL_CITIES, {
                 headers: {
-                    //'Authorization': `Bearer ${token}`, - убрать если понадобится
                     'Accept': 'application/ld+json',
                     'Content-Type': 'application/json; charset=UTF-8'
                 }

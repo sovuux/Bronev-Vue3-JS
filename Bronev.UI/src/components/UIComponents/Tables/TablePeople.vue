@@ -23,6 +23,7 @@
         >
           <span class="routes-body-content">
             {{ person[tableColumn.key] }}
+<!--            //{{ index === 3 ? person[documents] : '-' }}-->
           </span>
         </td>
         <td class="routes-body-img">
@@ -67,7 +68,7 @@ const tableColumns = ref([
   { key: "lastname", content: "Фамилия" },
   { key: "firstname", content: "Имя" },
   { key: "patronymic", content: "Отчество" },
-  { key: "documents.serial", content: "Паспорт" },
+  { key: "documents", content: "Паспорт" },
   { key: "phone", content: "Телефон" },
 ])
 

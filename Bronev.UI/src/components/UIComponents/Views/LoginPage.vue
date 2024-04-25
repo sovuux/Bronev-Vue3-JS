@@ -52,9 +52,8 @@ const tryLogin = () => {
     }
   }, 1000)
   openHomePage()
- // loginPage.value.onload = getTokenWindowHandler
 }
-
+// loginPage.value.onload = getTokenWindowHandler
 // function getTokenWindowHandler() {
 //   const UrlSearchParams = new URLSearchParams(loginPage.value.location.search)
 //   const tokenUrl = UrlSearchParams.get("token")
@@ -62,7 +61,7 @@ const tryLogin = () => {
 //   openHomePage()
 //   loginPage.value.close()
 // }
-//
+
 // watch(() => loginPage.value, () => {
 //   loginPage.value.addEventListener("focus", getTokenWindowHandler, { once: true })
 // })
@@ -70,7 +69,6 @@ const tryLogin = () => {
 
 <style scoped lang="scss">
 .login {
-  
   display: flex;
   align-items: center;
   height: 100vh;

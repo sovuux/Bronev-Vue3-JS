@@ -102,6 +102,7 @@ const denySearch = () => {
   firstName.value = ""
   lastName.value = ""
   patronymic.value = ""
+  console.log(firstName.value, lastName.value)
   store.getTableDrivers()
 }
 

@@ -12,33 +12,61 @@ const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
+            name: "Login",
             path: '/',
             component: LoginPage
         },
         {
+            name: "Home",
             path: '/home',
             component: SalesPage
         },
         {
+            name: "Routes",
             path: '/routes',
             component: RoutesPage
         },
         {
+            name: "Drivers",
             path: '/drivers',
             component: DriversPage
         },
         {
+            name: "Reports",
             path: '/report',
             component: ReportPage
         },
         {
+            name: "People",
             path: '/people',
             component: PeoplePage
         },
         {
+            name: "Cities",
             path: '/cities',
             component: CitiesPage
         }
     ]
 })
+
+router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        if (to.name !== "Login") {
+            next({ name: "Login" });
+        }
+        else {
+            next();
+        }
+    }
+    else {
+        if (to.name === "Login") {
+            next('/home');
+        }
+        else {
+            next();
+        }
+    }
+});
 export default router

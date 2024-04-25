@@ -73,7 +73,7 @@ const tableColumns = ref([
   { key: "latitude", content: "Широта" }
 ])
 
-const rowsPerPage = ref(10  );
+const rowsPerPage = ref(10);
 const currentPage = ref(1);
 
 const displayedCities = computed(() => {
