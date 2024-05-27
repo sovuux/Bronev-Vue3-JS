@@ -42,6 +42,7 @@
       <div class="aside-menu-dropdown">
         <DropdownMenu
           :options="dropDownArrayExpanded"
+          :is-expanded="true"
           :dropdown-name="'Справочники'"
         />
       </div>

@@ -15,8 +15,9 @@
           </div>
           <div class="page-body-data-table">
             <TableDictionary
-              :objects-array="people"
+              :objects-array="peopleFormatted"
               :table-columns="tableColumns"
+              :total-items-in-array="peopleCount"
               @open-modal-card="togglePopupCard"
             />
           </div>
@@ -36,13 +37,14 @@
 import SearchPeopleComponent from "@/components/UIComponents/Search/SearchPeopleComponent.vue";
 import PopupCard from "@/components/UIComponents/Popups/PopupCard.vue";
 import TableDictionary from "@/components/UIComponents/Tables/TableDictionary.vue";
-import { onMounted, ref, watch } from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import { useStore } from "@/stores/store.js";
 
 
 const store = useStore()
 const isPopupCardOpen = ref(false)
 const people = ref([])
+const peopleCount = ref(0)
 
 const searchInputsArray = [
   { placeholder: "Поиск по фамилии", type: "text" },
@@ -55,7 +57,7 @@ const popupColumns = [
   { key: "lastname", label: "Фамилия:" },
   { key: "firstname", label: "Имя:" },
   { key: "patronymic", label: "Отчество:" },
-  { key: "documents.serial", label: "Паспорт:" },
+  { key: "documents", label: "Паспорт:" },
   { key: "phone", label: "Телефон:" },
 ]
 
@@ -67,9 +69,28 @@ const tableColumns = ref([
   { key: "phone", content: "Телефон" },
 ])
 
+function formatPassport(documents) {
+  if (documents) {
+    return `${documents[0].serial} ` + `${documents[0].number}`;
+  }
+}
+
+const peopleFormatted = computed(() => {
+  return people.value.map(person => {
+    return {
+      ...person,
+      documents: formatPassport(person.documents)
+    }
+  })
+})
+
 const togglePopupCard = () => {
   isPopupCardOpen.value = !isPopupCardOpen.value
 }
+
+watch(() => store.peopleCount, (newValue) => {
+  peopleCount.value = newValue
+})
 
 watch(() => store.people, (newValue) => {
   people.value = newValue

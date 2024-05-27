@@ -35,10 +35,6 @@ const router = useRouter()
 
 const loginPage = ref()
 
-const openHomePage = () => {
-  router.push("/home")
-}
-
 const tryLogin = () => {
   const loginUrl = 'https://core.dev.bronew.ru/auth/sso'
   loginPage.value = window.open(loginUrl, '_blank', 'left=800,top=100,width=500,height=500')
@@ -53,30 +49,34 @@ const tryLogin = () => {
       localStorage.setItem("refresh_token", refreshToken)
       loginPage.value.close()
       console.clear()
+      router.push("/home")
     }
   }, 1000)
-  openHomePage()
 }
 </script>
 
 <style scoped lang="scss">
 .login {
+  margin: 0;
+  padding: 0;
   display: flex;
   align-items: center;
   height: 100vh;
+  z-index: 9999;
+  background: #fff;
 
   &-aside {
     &-img {
-      width: 640px;
-      height: 1002px;
+      width: 83.2%;
+      height: 100vh;
       object-fit: cover;
     }
   }
 
   &-text {
     display: grid;
-    width: 35%;
-    padding: 10%;
+    width: 40%;
+    padding: 0;
 
     &-title {
       user-select: none;

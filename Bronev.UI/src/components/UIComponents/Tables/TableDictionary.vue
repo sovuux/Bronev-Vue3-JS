@@ -43,9 +43,10 @@
     </template>
   </TableBaseComponent>
   <Paginator
-    v-if="props.objectsArray.length >=10"
+    v-if="props.totalItemsInArray >=10"
     :rows="rowsPerPage"
-    :total-records="props.objectsArray.length"
+    :total-records="props.totalItemsInArray"
+    :first="(currentPage - 1) * rowsPerPage"
     @page="onPageChange"
   />
 </template>
@@ -56,7 +57,8 @@ import ButtonBaseComponent from '@/components/ BaseComponents/Button/ButtonBaseC
 import Paginator from 'primevue/paginator';
 import EyeIcon from "@/assets/SvgImages/eye.svg";
 import { useStore } from '@/stores/store';
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useRoute, useRouter } from "vue-router";
 
 const emit = defineEmits(["openModalCard"])
 
@@ -68,10 +70,16 @@ const props = defineProps({
   objectsArray: {
     type: Array,
     required: true
+  },
+  totalItemsInArray: {
+    type: Number,
+    required: true
   }
 })
 
 const store = useStore()
+const router = useRouter()
+const route = useRoute()
 const currentPage = ref(1)
 const rowsPerPage = ref(10)
 
@@ -82,6 +90,7 @@ const openModal = (object) => {
 
 function onPageChange(event) {
   currentPage.value = event.page + 1
+  router.push({query: { ...route.query, page: currentPage.value } })
 }
 
 const displayedArray = computed(() => {
@@ -89,6 +98,18 @@ const displayedArray = computed(() => {
   const endIndex = startIndex + rowsPerPage.value
   return props.objectsArray.slice(startIndex, endIndex)
 })
+
+watch(route, (newRoute) => {
+  if (newRoute.query.page) {
+    currentPage.value = Number(newRoute.query.page);
+  }
+})
+
+onMounted(() => {
+  if (!route.query.page) {
+    router.replace({ query: { ...route.query, page: currentPage.value } });
+  }
+});
 </script>
 
 <style lang="scss" scoped>

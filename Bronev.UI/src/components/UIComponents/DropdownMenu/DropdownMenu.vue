@@ -19,30 +19,35 @@
       >
     </div>
   </div>
-  <div
-    v-if="isDropdownVisible"
-    class="dropdown-options"
-  >
-    <ButtonBaseComponent
+  <div v-if="isDropdownVisible">
+    <div
       v-for="(option, index) in props.options"
       :key="index"
-      class="dropdown-options-items"
+      class="dropdown-options"
+      :class="{'non-expanded-dropdown': !props.isExpanded}"
     >
-      <template #buttonContent>
-        <router-link
-          :to="option.path"
-          class="dropdown-options-items-router"
+      <router-link
+        :to="option.path"
+        class="dropdown-options-items-router"
+      >
+        <ButtonBaseComponent
+          class="dropdown-options-items"
         >
-          <img
-            :src="option.icon"
-            alt="icon"
-          >
-          <a class="dropdown-options-items-span">
-            {{ option.content }}
-          </a>
-        </router-link>
-      </template>
-    </ButtonBaseComponent>
+          <template #buttonContent>
+            <img
+              :src="option.icon"
+              alt="icon"
+            >
+            <span
+              v-if="props.isExpanded"
+              class="dropdown-options-items-span"
+            >
+              {{ option.content }}
+            </span>
+          </template>
+        </ButtonBaseComponent>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -60,6 +65,10 @@ const props = defineProps({
   dropdownName: {
     type: String,
     default: ""
+  },
+  isExpanded: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -109,8 +118,6 @@ const toggleDropdown = () => {
       box-sizing: border-box;
       border: none;
       color: black;
-      transition: 0.4s ease-out;
-
 
       &:hover {
         color: rgb(96, 153, 9);
@@ -138,5 +145,8 @@ const toggleDropdown = () => {
       }
     }
   }
+}
+.non-expanded-dropdown {
+  display: block;
 }
 </style>

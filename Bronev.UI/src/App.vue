@@ -1,28 +1,40 @@
 <template>
   <div class="page">
     <HeaderPageElement
+      v-if="!isLogin"
       class="page-header"
       @open-sidebar="toggleSideBar"
     />
-    <div class="page-body">
+    <div
+      class="page-body"
+      :class="{'login-page': isLogin}"
+    >
       <SideBar
+        v-if="!isLogin"
         class="page-body-sidebar"
         :is-expanded="isExpanded"
       />
-      <router-view
+      <div
         class="page-body-content"
-        :class="{'expanded-body': isExpanded}"
-      />
+        :class="{ 'login-page': isLogin }"
+      >
+        <router-view />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import HeaderPageElement from '@/components/UIComponents/Header/HeaderPageElement.vue';
 import SideBar from '@/components/UIComponents/SideBar/SideBar.vue';
+import { useRoute } from "vue-router";
+
+const route = useRoute()
 
 const isExpanded = ref(false)
+
+const isLogin = computed(() => route.name === "Login")
 
 const toggleSideBar = () => {
   isExpanded.value = !isExpanded.value
@@ -78,7 +90,8 @@ const toggleSideBar = () => {
     }
   }
 }
-.expanded-body{
-  transition: 0.4s ease-out;
+.login-page{
+  height: 100vh;
+  padding: 0;
 }
 </style>

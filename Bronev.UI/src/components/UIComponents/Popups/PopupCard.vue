@@ -96,10 +96,11 @@ const store = useStore()
       border-bottom: 1px solid black;
       display: flex;
       align-items: center;
+      text-align: right;
 
       &-label {
         padding: 2rem;
-        width: 60%;
+        width: 25%;
       }
 
       &-key {

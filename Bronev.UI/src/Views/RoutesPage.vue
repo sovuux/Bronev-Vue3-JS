@@ -15,8 +15,9 @@
           </div>
           <div class="page-body-data-table">
             <TableDictionary
-              :objects-array="routes"
+              :objects-array="routesFormatted"
               :table-columns="tableColumns"
+              :total-items-in-array="routesCount"
               @open-modal-card="togglePopupCard"
             />
           </div>
@@ -36,12 +37,13 @@
 import SearchRoutesComponent from "@/components/UIComponents/Search/SearchRoutesComponent.vue";
 import PopupCard from "@/components/UIComponents/Popups/PopupCard.vue";
 import TableDictionary from "@/components/UIComponents/Tables/TableDictionary.vue";
-import { onMounted, ref, watch } from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import { useStore } from "@/stores/store.js";
 
 const store = useStore()
 const isPopupCardOpen = ref(false)
 const routes = ref([])
+const routesCount = ref(0)
 
 const searchInputsArray = [
   { placeholder: "Поиск по наименованию", type: "text" },
@@ -60,9 +62,26 @@ const tableColumns = ref([
   { key: "active", content: "Доступность" },
 ])
 
+function formatActive(active) {
+  return active === true ? "Доступен" : "Не доступен";
+}
+
+const routesFormatted = computed(() => {
+  return routes.value.map(route => {
+    return {
+      ...route,
+      active: formatActive(route.active)
+    }
+  })
+})
+
 const togglePopupCard = () => {
   isPopupCardOpen.value = !isPopupCardOpen.value
 }
+
+watch(() => store.routesCount, (newValue) => {
+  routesCount.value = newValue
+})
 
 watch(() => store.routes, (newValue) => {
   routes.value = newValue

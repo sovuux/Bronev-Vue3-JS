@@ -77,7 +77,11 @@ const checkTokenPeriodically = () => {
     setInterval(() => {
         const currentToken = localStorage.getItem("token");
         if (!currentToken && previousToken) {
-            router.push({ name: "Login" });
+            router.push({ name: "Login" }).catch(error => {
+                if (error.name !== "NavigationDuplicated") {
+                    throw new error;
+                }
+            });
         }
         previousToken = currentToken;
     }, 10000);
@@ -86,7 +90,11 @@ const checkTokenPeriodically = () => {
 
 window.addEventListener('storage', (event) => {
     if (event.key === "token" && !event.newValue) {
-        router.push({ name: "Login" });
+        router.push({ name: "Login" }).catch(error => {
+            if (error.name !== "NavigationDuplicated") {
+                throw new error;
+            }
+        })
     }
 });
 
