@@ -1,9 +1,9 @@
 import axios from "axios";
 
 const API_URl = import.meta.env.VITE_API_URL;
-const API_URL_CITIES = import.meta.env.VITE_API_URL_CITIES;
+const API_URL_CITIES = import.meta.env.VITE_API_CITIES_URL;
 
-const token = localStorage.getItem("token");
+const token = localStorage.getItem("token")
 
 function createAxios(url) {
         return axios.get(API_URl + url, {
@@ -17,18 +17,15 @@ function createAxios(url) {
             const totalItems = response.data['hydra:totalItems'];
             return { data, totalItems };
         }).catch(error => {
-            console.error('Ошибка при выполнении запроса:', error);
+            console.log('Ошибка при выполнении запроса:', error);
             throw new error;
         });
 }
 
 async function getResponseData(url) {
-    try {
-        return await createAxios(url)
-    } catch (error) {
-        console.error('Ошибка при получении данных:', error);
-    }
+    return createAxios(url);
 }
+
 
 const ApiQueries = {
     async getRoutes() {
@@ -59,6 +56,7 @@ const ApiQueries = {
         try {
             const response = await axios.get(API_URL_CITIES, {
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Accept': 'application/ld+json',
                     'Content-Type': 'application/json; charset=UTF-8'
                 }
@@ -76,7 +74,7 @@ const ApiQueries = {
 
     async searchCities(parameter, searchParams) {
         try {
-            const response = await axios.get(API_URL_CITIES+`?page=1&${parameter}=${searchParams}`, {
+            const response = await axios.get(API_URl+`?page=1&${parameter}=${searchParams}`, {
                 headers: {
                     'Accept': 'application/ld+json',
                     'Content-Type': 'application/json; charset=UTF-8'

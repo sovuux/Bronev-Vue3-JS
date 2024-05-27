@@ -2,28 +2,28 @@
   <PopupBaseComponent>
     <template #popupHeader>
       <ButtonBaseComponent
-          class="popup-button-close"
-          @click-action="emit('closePopupCard')"
+        class="popup-button-close"
+        @click-action="emit('closePopupCard')"
       >
         <template #buttonContent>
           <img
-              :src="CloseIcon"
-              alt="close"
-              class="popup-button-close-img"
+            :src="CloseIcon"
+            alt="close"
+            class="popup-button-close-img"
           >
         </template>
       </ButtonBaseComponent>
       <div class="popup-header-title">
-          <span class="popup-header-title-content">
-            {{ props.popupName }}
-          </span>
+        <span class="popup-header-title-content">
+          {{ props.popupName }}
+        </span>
       </div>
     </template>
     <template #popupBody>
       <div
-          v-for="(formColumn, index) in props.formColumns"
-          :key="index"
-          class="popup-body-content"
+        v-for="(formColumn, index) in props.formColumns"
+        :key="index"
+        class="popup-body-content"
       >
         <span class="popup-body-content-label">
           {{ formColumn.label }}

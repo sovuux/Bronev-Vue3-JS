@@ -3,53 +3,60 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useStore = defineStore('store', () => {
-    const routes = ref([])
-    const routesCount = ref(0)
-    const drivers = ref([])
-    const driversCount = ref(0)
-    const people = ref([])
-    const peopleCount = ref(0)
+    const dataObjects = {
+        routes: ref([]),
+        routesCount: ref(0),
+        drivers: ref([]),
+        driversCount: ref(0),
+        people: ref([]),
+        peopleCount: ref(0),
+        // cities: ref([]),
+        // citiesCount: ref(0)
+    };
+
     const cities = ref([])
     const citiesCount = ref(0)
 
-    const cardObject = ref({})
+    const cardObject = ref({});
 
-    const getTableRoutes = async () => {
-        const { data, totalItems } = await ApiQueries.getRoutes()
-        routes.value = data
-        routesCount.value = totalItems
-    }
+    const handleResponse = (response) => {
+        const { data, totalItems } = response;
+        return {
+            data,
+            totalItems
+        };
+    };
 
-    const searchTableRoutes = async (parameter,searchParams) => {
-        const { data, totalItems } = await ApiQueries.searchRoutes(parameter, searchParams)
-        routes.value = data
-        routesCount.value = totalItems
-    }
+    const getData = async (key, apiQuery) => {
+        try {
+            const { data, totalItems } = handleResponse(await apiQuery());
+            dataObjects[key].value = data;
+            dataObjects[`${key}Count`].value = totalItems;
+        } catch (error) {
+            console.error('Ошибка', error);
+            throw error;
+        }
+    };
 
-    const getTableDrivers = async () => {
-        const { data, totalItems } = await ApiQueries.getDrivers()
-        drivers.value = data
-        driversCount.value = totalItems
-    }
+    const searchData = async (key, parameter, searchParams, apiQuery) => {
+        try {
+            const { data, totalItems } = handleResponse(await apiQuery(parameter, searchParams));
+            dataObjects[key].value = data;
+            dataObjects[`${key}Count`].value = totalItems;
+        } catch (error) {
+            console.error('Ошибка', error);
+            throw error;
+        }
+    };
 
-    const searchTableDrivers = async (parameter,searchParams) => {
-        const { data, totalItems } = await ApiQueries.searchDrivers(parameter, searchParams)
-        console.log(parameter, searchParams)
-        drivers.value = data
-        driversCount.value = totalItems
-    }
+    const getTableRoutes = () => getData('routes', ApiQueries.getRoutes);
+    const searchTableRoutes = (parameter, searchParams) => searchData('routes', parameter, searchParams, ApiQueries.searchRoutes);
 
-    const getTablePeople = async () => {
-        const { data, totalItems } = await ApiQueries.getPeople()
-        people.value = data
-        peopleCount.value = totalItems
-    }
+    const getTableDrivers = () => getData('drivers', ApiQueries.getDrivers);
+    const searchTableDrivers = (parameter, searchParams) => searchData('drivers', parameter, searchParams, ApiQueries.searchDrivers);
 
-    const searchTablePeople = async (parameter,searchParams) => {
-        const { data, totalItems } = await ApiQueries.searchPeople(parameter, searchParams)
-        people.value = data
-        peopleCount.value = totalItems
-    }
+    const getTablePeople = () => getData('people', ApiQueries.getPeople);
+    const searchTablePeople = (parameter, searchParams) => searchData('people', parameter, searchParams, ApiQueries.searchPeople);
 
     const getTableCities = async () => {
         const { data, totalItems } = await ApiQueries.getCities()
@@ -64,15 +71,10 @@ export const useStore = defineStore('store', () => {
     }
 
     return {
-        routes,
-        routesCount,
-        drivers,
-        driversCount,
-        people,
-        peopleCount,
+        ...dataObjects,
+        cardObject,
         cities,
         citiesCount,
-        cardObject,
         getTableRoutes,
         searchTableRoutes,
         getTableDrivers,
@@ -81,6 +83,5 @@ export const useStore = defineStore('store', () => {
         searchTablePeople,
         getTableCities,
         searchTableCities
-    }
-  }
-)
+    };
+});

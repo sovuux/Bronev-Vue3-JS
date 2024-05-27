@@ -2,7 +2,7 @@
   <div class="login">
     <div class="login-aside">
       <img
-        src="../../../assets/img/bgmain.jpg"
+        src="@/assets/img/bgmain.jpg"
         alt="bus-pic"
         class="login-aside-img"
       >
@@ -44,27 +44,19 @@ const tryLogin = () => {
   loginPage.value = window.open(loginUrl, '_blank', 'left=800,top=100,width=500,height=500')
   const checkTokenInterval = setInterval(() => {
     if (loginPage.value.closed || loginPage.value.location.pathname.startsWith("/login")) {
-      const token = loginPage.value.location.href.split(/[=?/&]/).splice(5,6).join('');
+      const result = loginPage.value.location.href.split(/[=?/&]/).splice(5,6).join('');
+      const resultParts = result.split("refresh_token");
+      const token = resultParts[0].trim();
+      const refreshToken = resultParts[1].trim();
       clearInterval(checkTokenInterval)
       localStorage.setItem("token", token)
+      localStorage.setItem("refresh_token", refreshToken)
       loginPage.value.close()
       console.clear()
     }
   }, 1000)
   openHomePage()
 }
-// loginPage.value.onload = getTokenWindowHandler
-// function getTokenWindowHandler() {
-//   const UrlSearchParams = new URLSearchParams(loginPage.value.location.search)
-//   const tokenUrl = UrlSearchParams.get("token")
-//   localStorage.setItem("token", tokenUrl)
-//   openHomePage()
-//   loginPage.value.close()
-// }
-
-// watch(() => loginPage.value, () => {
-//   loginPage.value.addEventListener("focus", getTokenWindowHandler, { once: true })
-// })
 </script>
 
 <style scoped lang="scss">

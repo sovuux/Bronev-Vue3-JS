@@ -4,8 +4,8 @@
       <ButtonBaseComponent class="search-header-button-plus">
         <template #buttonContent>
           <img
-              :src="PlusIcon"
-              alt="plus"
+            :src="PlusIcon"
+            alt="plus"
           >
         </template>
       </ButtonBaseComponent>
@@ -19,20 +19,20 @@
     </div>
     <div class="search-body">
       <InputBaseComponent
-          v-for="(input, index) in props.inputsArray"
-          :key="index"
-          :type="input.type"
-          :placeholder="input.placeholder"
-          class="search-body-input"
-          @input-text-change="getInputText"
+        v-for="(input, index) in props.inputsArray"
+        :key="index"
+        :type="input.type"
+        :placeholder="input.placeholder"
+        class="search-body-input"
+        @input-text-change="getInputText"
       />
     </div>
     <div class="search-footer">
       <ButtonBaseComponent
-          v-for="(button, index) in buttonFooterArray"
-          :key="index"
-          :class="button.class"
-          @click-action="button.action"
+        v-for="(button, index) in buttonFooterArray"
+        :key="index"
+        :class="button.class"
+        @click-action="button.action"
       >
         <template #buttonContent>
           <span>
@@ -78,25 +78,29 @@ const getInputText = (value) => {
 }
 
 const startSearch = () => {
-  if (firstName.value.length > 0) {
-    store.searchTableDrivers(searchParam.paramFirstName, firstName.value)
-    console.log(searchParam.paramFirstName)
+  const searchParams = {
+    firstName: firstName.value,
+    lastName: lastName.value,
+    patronymic: patronymic.value
+  };
+
+  const nonEmptyParams = Object.keys(searchParams).filter(key => searchParams[key].length > 0);
+
+  if (nonEmptyParams.length === 0) {
+    console.log("пустые инпуты");
+    return;
   }
-  else if (lastName.value.length > 0) {
-    store.searchTableDrivers(searchParam.paramLastName, lastName.value)
-    console.log(searchParam.paramLastName)
+
+  if (nonEmptyParams.length === 3) {
+    console.log("все инпуты введены");
+    return;
   }
-  else if (patronymic.value.length > 0) {
-    store.searchTableDrivers(searchParam.paramPatronymic, patronymic.value)
-    console.log(searchParam.paramPatronymic)
-  }
-  else if (firstName.value.length > 0 && lastName.value.length > 0 && patronymic.value.length > 0) {
-    console.log("все инпуты введены")
-  }
-  else {
-    console.log("пустые инпуты")
-  }
-}
+
+  const paramKey = `param${nonEmptyParams[0].charAt(0).toUpperCase() + nonEmptyParams[0].slice(1)}`;
+  store.searchTableDrivers(searchParam[paramKey], searchParams[nonEmptyParams[0]]);
+  console.log(searchParam[paramKey]);
+};
+
 
 const denySearch = () => {
   firstName.value = ""

@@ -4,8 +4,8 @@
       <ButtonBaseComponent class="search-header-button-plus">
         <template #buttonContent>
           <img
-              :src="PlusIcon"
-              alt="plus"
+            :src="PlusIcon"
+            alt="plus"
           >
         </template>
       </ButtonBaseComponent>
@@ -19,20 +19,20 @@
     </div>
     <div class="search-body">
       <InputBaseComponent
-          v-for="(input, index) in props.inputsArray"
-          :key="index"
-          :type="input.type"
-          :placeholder="input.placeholder"
-          class="search-body-input"
-          @input-text-change="getInputText"
+        v-for="(input, index) in props.inputsArray"
+        :key="index"
+        :type="input.type"
+        :placeholder="input.placeholder"
+        class="search-body-input"
+        @input-text-change="getInputText"
       />
     </div>
     <div class="search-footer">
       <ButtonBaseComponent
-          v-for="(button, index) in buttonFooterArray"
-          :key="index"
-          :class="button.class"
-          @click-action="button.action"
+        v-for="(button, index) in buttonFooterArray"
+        :key="index"
+        :class="button.class"
+        @click-action="button.action"
       >
         <template #buttonContent>
           <span>

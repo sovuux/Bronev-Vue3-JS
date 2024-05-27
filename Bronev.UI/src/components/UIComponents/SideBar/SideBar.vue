@@ -147,7 +147,7 @@ const dropDownArrayShort = ref([
     text-align: center;
 
     &-img {
-
+      margin-top: 20%;
       width: 4rem;
       height: 4rem;
       background-color: white;

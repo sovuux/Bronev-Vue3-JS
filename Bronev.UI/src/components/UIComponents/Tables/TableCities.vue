@@ -2,9 +2,9 @@
   <TableBaseComponent>
     <template #tableHead>
       <th
-          v-for="(tableColumn, index) in tableColumns"
-          :key="index"
-          class="cities-head"
+        v-for="(tableColumn, index) in tableColumns"
+        :key="index"
+        class="cities-head"
       >
         <span class="cities-head-title">
           {{ tableColumn.content }}
@@ -13,13 +13,13 @@
     </template>
     <template #tableBody>
       <tr
-          v-for="(city, key) in displayedCities"
-          :key="key"
+        v-for="(city, key) in displayedCities"
+        :key="key"
       >
         <td
-            v-for="(tableColumn, index) in tableColumns"
-            :key="index"
-            class="cities-body"
+          v-for="(tableColumn, index) in tableColumns"
+          :key="index"
+          class="cities-body"
         >
           <span class="cities-body-content">
             {{ city[tableColumn.key] }}
@@ -27,14 +27,14 @@
         </td>
         <td class="cities-body-img">
           <ButtonBaseComponent
-              class="cities-body-img-button"
-              @click-action="toggleModalCard(city)"
+            class="cities-body-img-button"
+            @click-action="toggleModalCard(city)"
           >
             <template #buttonContent>
               <img
-                  :src="EyeIcon"
-                  alt="eye"
-                  class="cities-body-img-button-content"
+                :src="EyeIcon"
+                alt="eye"
+                class="cities-body-img-button-content"
               >
             </template>
           </ButtonBaseComponent>
@@ -44,7 +44,7 @@
   </TableBaseComponent>
   <Paginator
     :rows="rowsPerPage"
-    :total-records="store.cities.length"
+    :total-records="store.citiesCount"
     @page="onPageChange"
   />
 </template>
@@ -52,7 +52,7 @@
 <script setup>
 import TableBaseComponent from '@/components/ BaseComponents/Table/TableBaseComponent.vue';
 import ButtonBaseComponent from "@/components/ BaseComponents/Button/ButtonBaseComponent.vue";
-import { computed, onMounted, ref, watch} from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useStore } from "@/stores/store.js";
 import EyeIcon from "@/assets/SvgImages/eye.svg";
 import Paginator from "primevue/paginator";
