@@ -32,6 +32,7 @@
       >
         <ButtonBaseComponent
           class="dropdown-options-items"
+          :class="{'non-expanded-dropdown-items': !props.isExpanded}"
         >
           <template #buttonContent>
             <img
@@ -110,19 +111,23 @@ const toggleDropdown = () => {
   &-options {
     display: grid;
     align-items: center;
-    justify-content: center;
+
+    &:hover {
+      color: rgb(96, 153, 9);
+    }
 
     &-items {
       display: flex;
+      width: 100%;
       padding: 1rem;
       box-sizing: border-box;
-      border: none;
+      border: 1px solid transparent;
       color: black;
 
       &:hover {
         color: rgb(96, 153, 9);
-        border-radius: 0;
-        border-bottom: 1px solid black;
+        border-radius: 4px;
+        border: 1px solid black;
         background: none;
         box-shadow: none;
       }
@@ -147,6 +152,12 @@ const toggleDropdown = () => {
   }
 }
 .non-expanded-dropdown {
-  display: block;
+  display: flex;
+
+  &-items {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 </style>

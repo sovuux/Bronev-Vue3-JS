@@ -67,7 +67,6 @@ const shortName = ref("")
 const searchParam = {
     paramFullName: "name",
     paramShortName: "shortName",
-
 }
 
 const getInputText = (value) => {

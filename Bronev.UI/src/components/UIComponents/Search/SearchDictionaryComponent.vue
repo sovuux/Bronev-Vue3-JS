@@ -24,8 +24,9 @@
         :key="key"
         :type="input.type"
         :placeholder="input.placeholder"
+        :value="props.inputsValue[key]"
         class="search-body-input"
-        @input-text-change="props.getInputText"
+        @input-text-change="(value) => props.getInputText(key, value)"
       />
     </div>
     <div class="search-footer">
@@ -54,12 +55,10 @@ const props = defineProps({
     type: Array,
     required: true
   },
-
   getInputText: {
     type: Function,
     required: true
   },
-
   startSearch: {
     type: Function,
     required: true
@@ -67,8 +66,12 @@ const props = defineProps({
   denySearch: {
     type: Function,
     required: true
+  },
+  inputsValue: {
+    type: Object,
+    required: true
   }
-})
+});
 
 const buttonsAdd = [
   { class: "search-header-button-plus", icon: PlusIcon, alt: "plus", text: "" },

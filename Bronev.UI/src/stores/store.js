@@ -1,6 +1,6 @@
 import ApiQueries from "@/API/api.js";
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
 export const useStore = defineStore('store', () => {
     const dataObjects = {
@@ -9,13 +9,11 @@ export const useStore = defineStore('store', () => {
         drivers: ref([]),
         driversCount: ref(0),
         people: ref([]),
-        peopleCount: ref(0),
-        // cities: ref([]),
-        // citiesCount: ref(0)
+        peopleCount: ref(0)
     };
 
-    const cities = ref([])
-    const citiesCount = ref(0)
+    const cities = ref([]);
+    const citiesCount = ref(0);
 
     const cardObject = ref({});
 
@@ -52,23 +50,23 @@ export const useStore = defineStore('store', () => {
     const getTableRoutes = () => getData('routes', ApiQueries.getRoutes);
     const searchTableRoutes = (parameter, searchParams) => searchData('routes', parameter, searchParams, ApiQueries.searchRoutes);
 
-    const getTableDrivers = () => getData('drivers', ApiQueries.getDrivers);
+    const getTableDrivers = (page) => getData('drivers', () => ApiQueries.getDrivers(page));
     const searchTableDrivers = (parameter, searchParams) => searchData('drivers', parameter, searchParams, ApiQueries.searchDrivers);
 
-    const getTablePeople = () => getData('people', ApiQueries.getPeople);
+    const getTablePeople = (page) => getData('people', () => ApiQueries.getPeople(page));
     const searchTablePeople = (parameter, searchParams) => searchData('people', parameter, searchParams, ApiQueries.searchPeople);
 
     const getTableCities = async () => {
-        const { data, totalItems } = await ApiQueries.getCities()
-        cities.value = data
-        citiesCount.value = totalItems
-    }
+        const { data, totalItems } = await ApiQueries.getCities();
+        cities.value = data;
+        citiesCount.value = totalItems;
+    };
 
-    const searchTableCities = async (parameter,searchParams) => {
-        const { data, totalItems } = await ApiQueries.searchCities(parameter, searchParams)
-        cities.value = data
-        citiesCount.value = totalItems
-    }
+    const searchTableCities = async (parameter, searchParams) => {
+        const { data, totalItems } = await ApiQueries.searchCities(parameter, searchParams);
+        cities.value = data;
+        citiesCount.value = totalItems;
+    };
 
     return {
         ...dataObjects,
