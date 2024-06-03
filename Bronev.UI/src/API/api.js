@@ -3,9 +3,8 @@ import axios from "axios";
 const API_URl = import.meta.env.VITE_API_URL;
 const API_URL_CITIES = import.meta.env.VITE_API_CITIES_URL;
 
-const token = localStorage.getItem("token")
-
 function createAxios(url) {
+    const token = localStorage.getItem("token")
     return axios.get(API_URl + url, {
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -55,7 +54,6 @@ const ApiQueries = {
         try {
             const response = await axios.get(API_URL_CITIES, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Accept': 'application/ld+json',
                     'Content-Type': 'application/json; charset=UTF-8'
                 }

@@ -106,9 +106,9 @@ const driversFormatted = computed(() => {
   return drivers.value.map(driver => {
     return {
       ...driver,
+      active: formatActive(driver.active),
       birthDate: formatDate(driver.birthDate),
-      sex: formatSex(driver.sex),
-      active: formatActive(driver.active)
+      sex: formatSex(driver.sex)
     };
   });
 });
