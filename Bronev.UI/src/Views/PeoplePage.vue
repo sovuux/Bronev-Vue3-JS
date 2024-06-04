@@ -139,11 +139,13 @@ const denySearch = () => {
 };
 
 function formatPassport(documents) {
-  if (documents && documents.length > 0) {
-    const serial = documents[0].serial;
-    const number = documents[0].number;
-    if (serial && number) {
-      return `${serial} ${number}`;
+  if (documents) {
+    if (documents.length > 0) {
+      const serial = documents[0].serial;
+      const number = documents[0].number;
+      if (serial && number) {
+        return `${serial} ${number}`;
+      }
     }
   }
   return "";
@@ -163,7 +165,7 @@ const togglePopupCard = () => {
 };
 
 watch(() => store.people, (newValue) => {
-  people.value = newValue;
+  people.value = newValue
 });
 
 watch(() => store.peopleCount, (newValue) => {
